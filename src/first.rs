@@ -15,6 +15,9 @@ pub enum Link {
 }
 
 impl List {
+    pub fn new() -> Self {
+        List { head: Link::Empty }
+    }
     pub fn push(&mut self, elem: i32) {
         let new_node = Box::new(Node {
             elem: elem,
@@ -32,5 +35,44 @@ impl List {
                 Some(node.elem)
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::List;
+
+    #[test]
+    fn test_new() {
+        let mut list = List::new();
+        assert_eq!(list.pop(), None);
+    }
+
+    #[test]
+    fn test_push() {
+        let mut list = List::new();
+
+        assert_eq!(list.pop(), None);
+        for i in &[1, 2, 3] {
+            list.push(*i);
+        }
+
+        assert_eq!(list.pop(), Some(3));
+        assert_eq!(list.pop(), Some(2));
+        assert_eq!(list.pop(), Some(1));
+        assert_eq!(list.pop(), None);
+    }
+
+    #[test]
+    fn test_pop() {
+        let mut list = List::new();
+        for i in &[1, 2, 3] {
+            list.push(*i);
+        }
+
+        assert_eq!(list.pop(), Some(3));
+        assert_eq!(list.pop(), Some(2));
+        assert_eq!(list.pop(), Some(1));
+        assert_eq!(list.pop(), None);
     }
 }
