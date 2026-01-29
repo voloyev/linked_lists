@@ -8,7 +8,7 @@ pub enum Link {
     More(Box<Node>),
 }
 
-struct Node {
+pub struct Node {
     elem: i32,
     next: Link,
 }
@@ -34,6 +34,16 @@ impl List {
                 self.head = node.next;
                 Some(node.elem)
             }
+        }
+    }
+}
+
+impl Drop for List {
+    fn drop(&mut self) {
+        let mut current_link = mem::replace(&mut self.head, Link::Empty);
+
+        while let Link::More(mut boxed_node) = current_link {
+            current_link = mem::replace(&mut boxed_node.next, Link::Empty)
         }
     }
 }
